@@ -1,0 +1,189 @@
+# Creating a bank database
+CREATE DATABASE bank;
+
+# Creating a table count_demos
+CREATE TABLE count_demos (
+	id int,
+    val int
+);
+
+# Inserting values in the table count_demos
+INSERT INTO count_demos
+values
+(1, 1), (2, 1), (3, 2), (4, 2), (5, null), (6, 3), (7, 4), (8, null), (9, 5);
+
+# Viewing the table
+select * from count_demos;
+
++ ------- + -------- +
+| id      | val      |
++ ------- + -------- +
+| 1       | 1        |
+| 2       | 1        |
+| 3       | 2        |
+| 4       | 2        |
+| 5       |          |
+| 6       | 3        |
+| 7       | 4        |
+| 8       |          |
+| 9       | 5        |
+| 1       | 1        |
+| 2       | 1        |
+| 3       | 2        |
+| 4       | 2        |
+| 5       |          |
+| 6       | 3        |
+| 7       | 4        |
+| 8       |          |
+| 9       | 5        |
+| 1       | 1        |
+| 2       | 1        |
+| 3       | 2        |
+| 4       | 2        |
+| 5       |          |
+| 6       | 3        |
+| 7       | 4        |
+| 8       |          |
+| 9       | 5        |
+| 1       | 1        |
+| 2       | 1        |
+| 3       | 2        |
+| 4       | 2        |
+| 5       |          |
+| 6       | 3        |
+| 7       | 4        |
+| 8       |          |
+| 9       | 5        |
+| 1       | 1        |
+| 2       | 1        |
+| 3       | 2        |
+| 4       | 2        |
+| 5       |          |
+| 6       | 3        |
+| 7       | 4        |
+| 8       |          |
+| 9       | 5        |
++ ------- + -------- +
+45 rows
+
+# Counting the number of rows in the table
+select count(*) from count_demos;
+
++ ------------- +
+| count(*)      |
++ ------------- +
+| 45            |
++ ------------- +
+1 rows
+
+# Counting the number of items in val column of the table
+select count(val) from count_demos;
+
++ --------------- +
+| count(val)      |
++ --------------- +
+| 35              |
++ --------------- +
+1 rows
+
+# Counting the distinct values of the val column in the table
+select count(distinct val) from count_demos;
+
++ ------------------------ +
+| count(distinct val)      |
++ ------------------------ +
+| 5                        |
++ ------------------------ +
+1 rows
+
+# Counting the distinct ids of the table
+select count(distinct id) from count_demos;
+
++ ----------------------- +
+| count(distinct id)      |
++ ----------------------- +
+| 9                       |
++ ----------------------- +
+1 rows
+
+# Summing the items in the val column of the table
+select sum(val) from count_demos;
+
++ ------------- +
+| sum(val)      |
++ ------------- +
+| 90            |
++ ------------- +
+1 rows
+
+# Summing the distinct values of the val column of the table 
+select sum(distinct val) from count_demos;
+
++ ---------------------- +
+| sum(distinct val)      |
++ ---------------------- +
+| 15                     |
++ ---------------------- +
+1 rows
+
+# Finding the Maximum number in the val column of the table
+select max(val) from count_demos;
+
++ ------------- +
+| max(val)      |
++ ------------- +
+| 5             |
++ ------------- +
+1 rows
+
+# Finding the minimum value of the val column in the table
+select min(val) from count_demos;
+
++ ------------- +
+| min(val)      |
++ ------------- +
+| 1             |
++ ------------- +
+1 rows
+
+# Finding the average value of the items in the val column of the table
+select avg(val) from count_demos;
+
++ ------------- +
+| avg(val)      |
++ ------------- +
+| 2.5714        |
++ ------------- +
+1 rows
+
+# Finding the average of the distinct values in the val column of the table
+select avg(distinct val) from count_demos;
+
++ ---------------------- +
+| avg(distinct val)      |
++ ---------------------- +
+| 3.0000                 |
++ ---------------------- +
+1 rows
+
+# Finding the round of the average value of the items in the val column of the table
+select round(avg(val), 2) from count_demos;
+
++ ----------------------- +
+| round(avg(val), 2)      |
++ ----------------------- +
+| 2.57                    |
++ ----------------------- +
+1 rows
+
+
+# Finding the round of the average of the distinct items of the val column of the table
+select round(avg(distinct val), 0) from count_demos;
+
++ -------------------------------- +
+| round(avg(distinct val), 0)      |
++ -------------------------------- +
+| 3                                |
++ -------------------------------- +
+1 rows
+
