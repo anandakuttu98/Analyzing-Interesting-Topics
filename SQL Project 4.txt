@@ -1,0 +1,44 @@
+use bank;
+select * from customer;
+
+# 1. Update the job of the customer with customerid 200000008 to 'Data Scientist'.
+update customer set job = 'Data Scientist'
+where customerid = 200000008;
+
+# 2. Increase the account balance of all customers by 10%.
+update customer
+set balance = balance*1.1;
+
+# 3. Set the balance of customers aged below 30 to 0.
+update customer set balance = 0
+where age < 30;
+
+# 4. Update the region of the customer named 'Thomas Lawrence' to 'Wales'.
+update customer set region = 'Wales'
+where name = 'Thomas' and surname = 'Lawrence';
+
+# 5. Set the job of all male customers to 'Engineer'.
+update customer set job = 'Engineer'
+where gender = 'male';
+
+# 6. Rollback the last update operation.
+rollback;
+
+# 7.  Commit the changes made so far.
+commit;
+
+#. 8. Update the balance of customers whose names start with 'J' to double their current balance.
+update customer set balance = balance*2
+where name like 'J%';
+
+# 9. Update the job of the customer with the highest balance to 'Manager'.
+select balance from customer 
+order by balance desc 
+limit 1;
+
+update customer set job = 'Manager'
+where balance = 300006;
+
+# 10.Set the balance of customers in the 'England' region to 50000.
+update customer set balance = 50000
+where region = 'England';
