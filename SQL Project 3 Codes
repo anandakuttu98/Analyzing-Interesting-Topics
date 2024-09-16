@@ -1,0 +1,37 @@
+use bank;
+select * from customer;
+
+# Questions 
+# 1.  List all customers sorted by their age in ascending order.
+select name, age from customer
+order by age;
+
+# 2. Display the top 10 customers with the highest balances.
+select name, balance from customer
+order by balance
+limit 10;
+
+# 3.  List the average balance of customers in each region, only for regions where the average balance is above 60000.
+select region, name, avg(balance) as avg_balance from customer
+group by name, region
+having avg_balance > 60000
+order by avg_balance;
+
+# 4. Display the top 3 jobs with the highest total balance.
+select job, balance from customer
+order by balance desc
+limit 3;
+
+# 5. Display the top 5 regions with the highest total balance.
+select region, balance from customer
+order by balance desc
+limit 5;
+
+# 6. Find the total balance held by customers aged between 25 and 35 (inclusive).
+select name, age, balance from customer
+where age between 25 and 35;
+
+# 7. List all male customers whose balance is greater than 50000.
+select name, gender, balance from customer
+where gender = 'male' and balance > 50000;
+
