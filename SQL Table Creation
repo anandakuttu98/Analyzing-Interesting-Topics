@@ -1,0 +1,66 @@
+use bank;
+-- 1. Create a SQL script to create the above tables in the TechMart database.
+CREATE TABLE PRODUCT (
+	product_id int,
+    product_name varchar (255),
+    price decimal,
+    category varchar (255),
+    primary key (product_id)
+);
+
+CREATE TABLE CUSTOMERS (
+	customer_id int,
+    customer_name varchar (255),
+    email varchar (255),
+    phone varchar (255),
+    primary key (customer_id)
+);
+
+CREATE TABLE ORDERS (
+	order_id int,
+    customer_id int,
+    product_id int,
+    quantity int,
+    order_date datetime,
+    primary key (order_id),
+    foreign key (customer_id) references customers(customer_id),
+    foreign key (product_id) references product(product_id)
+);
+
+
+-- 2. Insert 5 records into the Products table with sample data.
+insert into product 
+values
+(101, 'basmati rice', 150, 'food'),
+(102, 'tupperwear bottles', 250, 'plastic'),
+(103, 'bananas', 80, 'fruit'),
+(104, 'notebook', 120, 'stationay'),
+(105, 'wheet', 300, 'food');
+
+select * from product;
+
+-- 3. Insert 3 records into the Customers table with sample data.
+insert into customers 
+values
+(151, 'Vishal', 'vishal89@gmail.com', 8547612549),
+(152, 'Rani', 'rani43@gmail.com', 6875124859),
+(153, 'Deva', 'deva55@gmail.com', 9756245138);
+
+
+select * from customers;
+
+-- 4. Insert 10 records into the Orders table with sample data, ensuring that each order is associated with a random customer and product.
+insert into orders
+values
+(235, 151, 101, 5, '11-06-21'),
+(236, 152, 102, 6, '08-07-21'),
+(237, 153, 103, 4, '09-10-21'),
+(238, null, 104, 5, '10-11-21'),
+(239, null, 105, 8, '02-12-21'),
+(240, null, null, 5, '01-01-22'),
+(241, null, null, 2, '06-02-22'),
+(242, null, null, 3, '03-03-22'),
+(243, null, null, 6, '08-04-22'),
+(244, null, null, 1, '09-05-22');
+
+select * from orders;
