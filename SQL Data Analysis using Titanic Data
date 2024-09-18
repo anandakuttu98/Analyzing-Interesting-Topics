@@ -1,0 +1,307 @@
+CASE STUDY: Utilizing Advanced Data Analysis on Titanic Data
+
+CODE: -
+
+use music;
+
+select * from titanic;
+
+# 1. How can we list passengers who paid a fare higher than the average fare?
+
+select passenger_no, first_name, last_name, fare from titanic
+where fare > (select avg(fare) from titanic);
+
+# 2. How can we find all passengers who travelled in the same class as 'Julia Patel'?
+
+select passenger_no, first_name, last_name, pclass from titanic
+where pclass = (select pclass from titanic where first_name = 'Julia' and last_name = 'Patel');
+
+# 3. How can we find passengers who embarked from the most common embarkation town?
+
+select Passenger_No, first_name, last_name, embark_town
+from titanic
+where embark_town = (select embark_town from titanic
+group by embark_town
+order by count(*) desc
+limit 1);
+
+# 4. How can we list all survivors whose age is below the average age of all passengers?
+
+select passenger_no, first_name, last_name, age from titanic
+where age < (select avg(age) from titanic) and 
+survived = 1; 
+
+# 5. How can we find the top 10 passengers who paid the highest fare?
+
+select passenger_no, first_name, last_name, fare from titanic
+where fare in (select fare from titanic
+order by fare desc)
+limit 10;
+
+# 6. How can we list passengers who were in classes with above-average survival rates?
+
+select passenger_no, first_name, last_name, class from titanic
+where pclass in (select pclass from titanic
+group by pclass
+having avg(survived) > (select avg(survived) from titanic));
+
+# 7. How can we find passengers who were on decks with the lowest average fare?
+
+select passenger_no, first_name, last_name, fare, deck from titanic
+where deck = (select deck from titanic
+group by deck
+order by avg(fare)
+limit 1);
+
+# 8. How can we list passengers whose fare was higher than the average fare of their travel class?
+
+select passenger_no, first_name, last_name, pclass, fare from titanic t1
+where fare > (select avg(fare) from titanic t2 where t1.pclass = t2.pclass); 
+
+# 9. How can we find passengers whose age is exactly the average age of passengers from their embarked town? 
+
+select Passenger_No, first_name, last_name, age, embark_town from titanic 
+where age in (select avg(age) as avg_age from titanic
+group by embark_town
+order by avg_age);
+
+# 10. How can we list passengers who travelled in the deck number that was most commonly used?
+
+select passenger_no, first_name, deck_number from titanic
+where DECK_NUMBER = (select distinct DECK_NUMBER from titanic
+group by DECK_NUMBER
+order by count(*) desc
+limit 1);
+
+Output: -
+
+Execute:
+> select * from titanic
+
++ ----------------- + --------------- + -------------- + ------------- + ----------- + -------- + -------- + ---------- + --------- + ------------- + ---------- + -------- + --------------- + --------- + ---------------- + ---------- + ---------- + ---------------- +
+| Passenger_No      | first_name      | last_name      | survived      | pclass      | sex      | age      | parch      | fare      | embarked      | class      | who      | adult_male      | deck      | embark_town      | alive      | alone      | DECK_NUMBER      |
++ ----------------- + --------------- + -------------- + ------------- + ----------- + -------- + -------- + ---------- + --------- + ------------- + ---------- + -------- + --------------- + --------- + ---------------- + ---------- + ---------- + ---------------- +
+| 1                 | Steven          | King           | 0             | 3           | male     | 22       | 0          | 24000     | S             | Third      | man      | TRUE            | A         | Southampton      | no         | FALSE      | 90               |
+| 2                 | Ross            | Kochhar        | 1             | 1           | female   | 38       | 0          | 50806     | C             | First      | woman    | FALSE           | C         | Cherbourg        | yes        | FALSE      | 90               |
+| 3                 | Alex            | Urman          | 1             | 3           | female   | 26       | 0          | 54071     | S             | Third      | woman    | FALSE           | B         | Southampton      | yes        | TRUE       | 90               |
+| 4                 | Bruce           | Popp           | 1             | 1           | female   | 35       | 0          | 26969     | S             | First      | woman    | FALSE           | C         | Southampton      | yes        | FALSE      | 60               |
+| 5                 | David           | Raphaely       | 0             | 3           | male     | 35       | 0          | 34048     | S             | Third      | man      | TRUE            | C         | Southampton      | no         | TRUE       | 60               |
+| 6                 | Nancy           | Khoo           | 0             | 3           | male     | 27       | 0          | 46206     | Q             | Third      | man      | TRUE            | E         | Queenstown       | no         | TRUE       | 70               |
+| 7                 | John            | Baida          | 0             | 1           | male     | 54       | 0          | 63090     | S             | First      | man      | TRUE            | E         | Southampton      | no         | TRUE       | 70               |
+| 8                 | Daniel          | Weiss          | 0             | 3           | male     | 2        | 1          | 56356     | S             | Third      | child    | FALSE           | G         | Southampton      | no         | FALSE      | 70               |
+| 9                 | Sigal           | Kaufling       | 1             | 3           | female   | 27       | 2          | 23488     | S             | Third      | woman    | FALSE           | A         | Southampton      | yes        | FALSE      | 60               |
+| 10                | Adam            | Vollman        | 1             | 2           | female   | 14       | 0          | 29047     | C             | Second     | child    | FALSE           | B         | Cherbourg        | yes        | FALSE      | 90               |
+| 11                | Mathew          | Himuro         | 1             | 3           | female   | 4        | 1          | 51428     | S             | Third      | child    | FALSE           | G         | Southampton      | yes        | FALSE      | 100              |
+| 12                | Harvey          | Mikkilineni    | 1             | 1           | female   | 58       | 0          | 61770     | S             | First      | woman    | FALSE           | C         | Southampton      | yes        | TRUE       | 100              |
+| 13                | Kevin           | Rogers         | 0             | 3           | male     | 20       | 0          | 30897     | S             | Third      | man      | TRUE            | C         | Southampton      | no         | TRUE       | 70               |
+| 14                | Julia           | Patel          | 0             | 3           | male     | 39       | 5          | 59197     | S             | Third      | man      | TRUE            | C         | Southampton      | no         | FALSE      | 80               |
+| 15                | Irene           | Davies         | 0             | 3           | female   | 14       | 0          | 61211     | S             | Third      | child    | FALSE           | G         | Southampton      | no         | TRUE       | 80               |
+| 16                | James           | Zlotkey        | 1             | 2           | female   | 55       | 0          | 43386     | S             | Second     | woman    | FALSE           | D         | Southampton      | yes        | TRUE       | 80               |
+| 17                | Jason           | Bernstein      | 0             | 3           | male     | 2        | 1          | 27978     | Q             | Third      | child    | FALSE           | G         | Queenstown       | no         | FALSE      | 100              |
+| 18                | Peter           | Hall           | 1             | 2           | male     | 34       | 0          | 46632     | S             | Second     | man      | TRUE            | B         | Southampton      | yes        | TRUE       | 80               |
+| 19                | Sartha          | Sully          | 0             | 3           | female   | 31       | 0          | 66662     | S             | Third      | woman    | FALSE           | D         | Southampton      | no         | FALSE      | 60               |
+| 20                | William         | Smith          | 1             | 3           | female   | 29       | 0          | 38628     | C             | Third      | woman    | FALSE           | D         | Cherbourg        | yes        | TRUE       | 70               |
+| 21                | Jack            | Greene         | 0             | 2           | male     | 35       | 0          | 20068     | S             | Second     | man      | TRUE            | G         | Southampton      | no         | TRUE       | 90               |
++ ----------------- + --------------- + -------------- + ------------- + ----------- + -------- + -------- + ---------- + --------- + ------------- + ---------- + -------- + --------------- + --------- + ---------------- + ---------- + ---------- + ---------------- +
+21 rows
+
+Execute:
+> select passenger_no, first_name, last_name, fare from titanic
+where fare > (select avg(fare) from titanic)
+
++ ----------------- + --------------- + -------------- + --------- +
+| passenger_no      | first_name      | last_name      | fare      |
++ ----------------- + --------------- + -------------- + --------- +
+| 2                 | Ross            | Kochhar        | 50806     |
+| 3                 | Alex            | Urman          | 54071     |
+| 6                 | Nancy           | Khoo           | 46206     |
+| 7                 | John            | Baida          | 63090     |
+| 8                 | Daniel          | Weiss          | 56356     |
+| 11                | Mathew          | Himuro         | 51428     |
+| 12                | Harvey          | Mikkilineni    | 61770     |
+| 14                | Julia           | Patel          | 59197     |
+| 15                | Irene           | Davies         | 61211     |
+| 18                | Peter           | Hall           | 46632     |
+| 19                | Sartha          | Sully          | 66662     |
++ ----------------- + --------------- + -------------- + --------- +
+11 rows
+
+Execute:
+> select passenger_no, first_name, last_name, pclass from titanic
+where pclass = (select pclass from titanic where first_name = 'Julia' and last_name = 'Patel')
+
++ ----------------- + --------------- + -------------- + ----------- +
+| passenger_no      | first_name      | last_name      | pclass      |
++ ----------------- + --------------- + -------------- + ----------- +
+| 1                 | Steven          | King           | 3           |
+| 3                 | Alex            | Urman          | 3           |
+| 5                 | David           | Raphaely       | 3           |
+| 6                 | Nancy           | Khoo           | 3           |
+| 8                 | Daniel          | Weiss          | 3           |
+| 9                 | Sigal           | Kaufling       | 3           |
+| 11                | Mathew          | Himuro         | 3           |
+| 13                | Kevin           | Rogers         | 3           |
+| 14                | Julia           | Patel          | 3           |
+| 15                | Irene           | Davies         | 3           |
+| 17                | Jason           | Bernstein      | 3           |
+| 19                | Sartha          | Sully          | 3           |
+| 20                | William         | Smith          | 3           |
++ ----------------- + --------------- + -------------- + ----------- +
+13 rows
+
+Execute:
+> select Passenger_No, first_name, last_name, embark_town
+from titanic
+where embark_town = (select embark_town from titanic
+group by embark_town
+order by count(*) desc
+limit 1)
+
++ ----------------- + --------------- + -------------- + ---------------- +
+| Passenger_No      | first_name      | last_name      | embark_town      |
++ ----------------- + --------------- + -------------- + ---------------- +
+| 1                 | Steven          | King           | Southampton      |
+| 3                 | Alex            | Urman          | Southampton      |
+| 4                 | Bruce           | Popp           | Southampton      |
+| 5                 | David           | Raphaely       | Southampton      |
+| 7                 | John            | Baida          | Southampton      |
+| 8                 | Daniel          | Weiss          | Southampton      |
+| 9                 | Sigal           | Kaufling       | Southampton      |
+| 11                | Mathew          | Himuro         | Southampton      |
+| 12                | Harvey          | Mikkilineni    | Southampton      |
+| 13                | Kevin           | Rogers         | Southampton      |
+| 14                | Julia           | Patel          | Southampton      |
+| 15                | Irene           | Davies         | Southampton      |
+| 16                | James           | Zlotkey        | Southampton      |
+| 18                | Peter           | Hall           | Southampton      |
+| 19                | Sartha          | Sully          | Southampton      |
+| 21                | Jack            | Greene         | Southampton      |
++ ----------------- + --------------- + -------------- + ---------------- +
+16 rows
+
+Execute:
+> select passenger_no, first_name, last_name, age from titanic
+where age < (select avg(age) from titanic) and 
+survived = 1
+
++ ----------------- + --------------- + -------------- + -------- +
+| passenger_no      | first_name      | last_name      | age      |
++ ----------------- + --------------- + -------------- + -------- +
+| 3                 | Alex            | Urman          | 26       |
+| 9                 | Sigal           | Kaufling       | 27       |
+| 10                | Adam            | Vollman        | 14       |
+| 11                | Mathew          | Himuro         | 4        |
++ ----------------- + --------------- + -------------- + -------- +
+4 rows
+
+Execute:
+> select passenger_no, first_name, last_name, fare from titanic
+where fare in (select fare from titanic
+order by fare desc)
+limit 10
+
++ ----------------- + --------------- + -------------- + --------- +
+| passenger_no      | first_name      | last_name      | fare      |
++ ----------------- + --------------- + -------------- + --------- +
+| 1                 | Steven          | King           | 24000     |
+| 2                 | Ross            | Kochhar        | 50806     |
+| 3                 | Alex            | Urman          | 54071     |
+| 4                 | Bruce           | Popp           | 26969     |
+| 5                 | David           | Raphaely       | 34048     |
+| 6                 | Nancy           | Khoo           | 46206     |
+| 7                 | John            | Baida          | 63090     |
+| 8                 | Daniel          | Weiss          | 56356     |
+| 9                 | Sigal           | Kaufling       | 23488     |
+| 10                | Adam            | Vollman        | 29047     |
++ ----------------- + --------------- + -------------- + --------- +
+10 rows
+
+Execute:
+> select passenger_no, first_name, last_name, class from titanic
+where pclass in (select pclass from titanic
+group by pclass
+having avg(survived) > (select avg(survived) from titanic))
+
++ ----------------- + --------------- + -------------- + ---------- +
+| passenger_no      | first_name      | last_name      | class      |
++ ----------------- + --------------- + -------------- + ---------- +
+| 2                 | Ross            | Kochhar        | First      |
+| 4                 | Bruce           | Popp           | First      |
+| 7                 | John            | Baida          | First      |
+| 10                | Adam            | Vollman        | Second     |
+| 12                | Harvey          | Mikkilineni    | First      |
+| 16                | James           | Zlotkey        | Second     |
+| 18                | Peter           | Hall           | Second     |
+| 21                | Jack            | Greene         | Second     |
++ ----------------- + --------------- + -------------- + ---------- +
+8 rows
+
+Execute:
+> select passenger_no, first_name, last_name, fare, deck from titanic
+where deck = (select deck from titanic
+group by deck
+order by avg(fare)
+limit 1)
+
++ ----------------- + --------------- + -------------- + --------- + --------- +
+| passenger_no      | first_name      | last_name      | fare      | deck      |
++ ----------------- + --------------- + -------------- + --------- + --------- +
+| 1                 | Steven          | King           | 24000     | A         |
+| 9                 | Sigal           | Kaufling       | 23488     | A         |
++ ----------------- + --------------- + -------------- + --------- + --------- +
+2 rows
+
+Execute:
+> select passenger_no, first_name, last_name, pclass, fare from titanic t1
+where fare > (select avg(fare) from titanic t2 where t1.pclass = t2.pclass)
+
++ ----------------- + --------------- + -------------- + ----------- + --------- +
+| passenger_no      | first_name      | last_name      | pclass      | fare      |
++ ----------------- + --------------- + -------------- + ----------- + --------- +
+| 2                 | Ross            | Kochhar        | 1           | 50806     |
+| 3                 | Alex            | Urman          | 3           | 54071     |
+| 6                 | Nancy           | Khoo           | 3           | 46206     |
+| 7                 | John            | Baida          | 1           | 63090     |
+| 8                 | Daniel          | Weiss          | 3           | 56356     |
+| 11                | Mathew          | Himuro         | 3           | 51428     |
+| 12                | Harvey          | Mikkilineni    | 1           | 61770     |
+| 14                | Julia           | Patel          | 3           | 59197     |
+| 15                | Irene           | Davies         | 3           | 61211     |
+| 16                | James           | Zlotkey        | 2           | 43386     |
+| 18                | Peter           | Hall           | 2           | 46632     |
+| 19                | Sartha          | Sully          | 3           | 66662     |
++ ----------------- + --------------- + -------------- + ----------- + --------- +
+12 rows
+
+Execute:
+> select Passenger_No, first_name, last_name, age, embark_town from titanic 
+where age in (select avg(age) as avg_age from titanic
+group by embark_town
+order by avg_age)
+
++ ----------------- + --------------- + -------------- + -------- + ---------------- +
+| Passenger_No      | first_name      | last_name      | age      | embark_town      |
++ ----------------- + --------------- + -------------- + -------- + ---------------- +
+| 6                 | Nancy           | Khoo           | 27       | Queenstown       |
+| 9                 | Sigal           | Kaufling       | 27       | Southampton      |
++ ----------------- + --------------- + -------------- + -------- + ---------------- +
+2 rows
+
+Execute:
+> select passenger_no, first_name, deck_number from titanic
+where DECK_NUMBER = (select distinct DECK_NUMBER from titanic
+group by DECK_NUMBER
+order by count(*) desc
+limit 1)
+
++ ----------------- + --------------- + ---------------- +
+| passenger_no      | first_name      | deck_number      |
++ ----------------- + --------------- + ---------------- +
+| 1                 | Steven          | 90               |
+| 2                 | Ross            | 90               |
+| 3                 | Alex            | 90               |
+| 10                | Adam            | 90               |
+| 21                | Jack            | 90               |
++ ----------------- + --------------- + ---------------- +
+5 rows
+
